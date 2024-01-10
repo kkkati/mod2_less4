@@ -1,5 +1,5 @@
 import styles from "./app.module.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const sendData = (formData) => console.log(formData);
 
@@ -9,9 +9,18 @@ function App() {
   const [password2, setPassword2] = useState("");
   const [formError, setFormError] = useState(null);
 
+  const button = useRef(null);
+
   const onSubmit = (event) => {
     event.preventDefault();
     sendData({ email, password1 });
+
+    // if (password1 !== password2) {
+    //   setFormError("Набранные пароли отличаются");
+    // } else {
+    //   setFormError(null);
+    //   sendData({ email, password1 });
+    // }
   };
   const onChangeEmail = ({ target }) => {
     setEmail(target.value);
@@ -23,8 +32,8 @@ function App() {
   };
 
   const onBlurPassword1 = () => {
-    if (password1.length < 5) {
-      setFormError("Неверный пароль, должно быть не менее 5 символов");
+    if (password1.length < 3) {
+      setFormError("Неверный пароль, должно быть не менее 3 символов");
     }
   };
 
@@ -34,16 +43,22 @@ function App() {
     if (!/^[\w_]*$/.test(target.value)) {
       error =
         "Неверный пароль, можно использовать только латинские буквы, цифры, '_'";
+    } else if (target.value.length > 15) {
+      error = "Пароль должен быть не больше 15 символов";
     }
     setFormError(error);
   };
 
   const onChangePassword2 = ({ target }) => {
     setPassword2(target.value);
+    if (password1 === target.value && email !== "") {
+      setFormError(null);
+      button.current.focus();
+    }
   };
 
   const onBlurPassword2 = ({ target }) => {
-    if (target.value != password1) {
+    if (password1 !== target.value) {
       setFormError("Набранные пароли отличаются");
     } else {
       setFormError(null);
@@ -74,7 +89,7 @@ function App() {
           onChange={onChangePassword2}
           onBlur={onBlurPassword2}
         ></input>
-        <button type="submit" disabled={formError !== null}>
+        <button type="submit" disabled={formError !== null} ref={button}>
           Зарегистрироваться
         </button>
       </form>
