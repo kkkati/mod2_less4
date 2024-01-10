@@ -14,13 +14,6 @@ function App() {
   const onSubmit = (event) => {
     event.preventDefault();
     sendData({ email, password1 });
-
-    // if (password1 !== password2) {
-    //   setFormError("Набранные пароли отличаются");
-    // } else {
-    //   setFormError(null);
-    //   sendData({ email, password1 });
-    // }
   };
   const onChangeEmail = ({ target }) => {
     setEmail(target.value);
