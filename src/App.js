@@ -24,6 +24,12 @@ function App() {
     setFormError(error);
   };
 
+  const OnBlurEmail = () => {
+    if (email.length < 7) {
+      setFormError("Неверный email, должно быть не менее 7 символов");
+    }
+  };
+
   const onBlurPassword1 = () => {
     if (password1.length < 3) {
       setFormError("Неверный пароль, должно быть не менее 3 символов");
@@ -36,8 +42,8 @@ function App() {
     if (!/^[\w_]*$/.test(target.value)) {
       error =
         "Неверный пароль, можно использовать только латинские буквы, цифры, '_'";
-    } else if (target.value.length > 15) {
-      error = "Пароль должен быть не больше 15 символов";
+    } else if (target.value.length > 20) {
+      error = "Пароль должен быть не больше 20 символов";
     }
     setFormError(error);
   };
@@ -67,6 +73,7 @@ function App() {
           name="email"
           value={email}
           onChange={onChangeEmail}
+          onBlur={OnBlurEmail}
         ></input>
         <input
           type="password"
